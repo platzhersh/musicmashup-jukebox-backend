@@ -11,20 +11,17 @@ def ws_connect(message):
     Connected to websocket.connect channel
 
     Todo: check if there is a user, if yes, add to room.
-    Todo: get room id
     """
     room = os.path.basename(os.path.normpath(message.content['path']))
     message.channel_session['room'] = room
-    Group("room").add(message.reply_channel)
-
-    """
-    Group("room-%s" % room).add(message.reply_channel)
-    Group("room-%s" % room).send("user joined chat-%s" % room)
-    print("user joined chat-%s" % room)
-    """
+    
+    Group("room-%s" % room).add(message.reply_channel)  
+    Group("room-%s" % room).send({"text": "Willkommen im Raum %s" % room})
+    
 
 
 @channel_session
+@enforce_ordering
 def ws_disconnect(message):
     """
     Connected to websocket.disconnect channel
@@ -32,13 +29,13 @@ def ws_disconnect(message):
     Todo: check if there is a user, if yes, remove from room.
     """
 
-    Group("room").discard(message.reply_channel)
+    #Group("room").discard(message.reply_channel)
     #Group("room").send("room left")
-    """
-    Group("room-%s" % message.channel_session['room']).discard(message.reply_channel)
+    room = message.channel_session['room']
+    Group("room-%s" % room).discard(message.reply_channel)
     Group("room-%s" % room).send("user left chat-%s" % room)
-    print("user left chat-%s" % room)
-	"""
+    #print("user left chat-%s" % room)
+	
 
 
 @channel_session
@@ -49,9 +46,8 @@ def ws_message(message):
 
     Todo: 
     """
-    text = message['text'] + message.channel_session['room']
-    Group("room").send({"text": text })
-    #Group("room-%s" % message.channel_session['room']).send({"text": message['text']})
+    #Group("room").send({"text": text })
+    Group("room-%s" % message.channel_session['room']).send({"text": message['text']})
 
 """        
     ChatMessage.objects.create(

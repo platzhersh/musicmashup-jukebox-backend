@@ -30,7 +30,6 @@ Raum nicht gefunden
 	// connection gets bumped over to WebSocket consumers
 	var socket = new WebSocket("ws://" + window.location.host + "/rooms/" + {{room.id}});
 	socket.onopen = function() {
-	    socket.send("Willkommen");
 	    console.log("Willkommen sent");
 	}
 	socket.onmessage = function(e) {
