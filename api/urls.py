@@ -11,14 +11,13 @@ jukebox = [
 
     url(r'^videos/?$', utils.get_listview('jukebox', 'Video').as_view(), name="videos"),
     url(r'^videos/(?P<pk>[0-9]+)/?$', utils.get_retrieveview('jukebox', 'Video').as_view(), name='video'),
+
 ]
 
 # where it all comes together
 urlpatterns = [
     url(r'^$', views.api_root),
     url(r'^jukebox/', include(jukebox, namespace="jukebox")),
-    url(r'^api-auth/', include('rest_framework.urls',
-                               namespace='rest_framework'))
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -24,6 +24,8 @@ urlpatterns = [
 	url(r'^$', frontend_views.home, name='home'),
 	url(r'^rooms/$', frontend_views.rooms, name='rooms'),
 	url(r'^rooms/(?P<pk>[0-9]+)/?$', frontend_views.room, name="room"),
+	url(r'^api-auth/', include('rest_framework.urls',
+                               namespace='rest_framework')),
 	url(r'^api/', include(api_urls, namespace="api")),
     url(r'^admin/', admin.site.urls),
 ]

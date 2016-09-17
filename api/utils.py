@@ -2,7 +2,7 @@
 from django.apps import apps
 from rest_framework import serializers
 from rest_framework import generics
-from api.views import DjangoModelPermissionsMixin
+from api.views import DjangoModelPermissionsMixin, DjangoModelPermissionsOrAnonReadOnlyMixin
 
 
 def get_serializer_by_model(serialize):
@@ -35,7 +35,7 @@ def get_listview_by_model(viewmodel):
 	"""
 	"""
 
-	class GenericListAPIView(generics.ListCreateAPIView):
+	class GenericListAPIView(generics.ListCreateAPIView, DjangoModelPermissionsOrAnonReadOnlyMixin):
 		queryset = viewmodel.objects.all()
 		serializer_class = get_serializer_by_model(viewmodel)
 
@@ -55,7 +55,7 @@ def get_retrieveview_by_model(viewmodel):
 	"""
 	"""
 
-	class GenericRetrieveAPIView(generics.RetrieveUpdateAPIView):
+	class GenericRetrieveAPIView(generics.RetrieveUpdateAPIView, DjangoModelPermissionsOrAnonReadOnlyMixin):
 		queryset = viewmodel.objects.all()
 		serializer_class = get_serializer_by_model(viewmodel)
 

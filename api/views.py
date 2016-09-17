@@ -12,6 +12,9 @@ from rest_framework import status, filters, permissions
 class DjangoModelPermissionsMixin(generics.GenericAPIView):
     permission_classes = (permissions.DjangoModelPermissions,)
 
+class DjangoModelPermissionsOrAnonReadOnlyMixin(generics.GenericAPIView):
+    permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
+
 
 @api_view(('GET',))
 def api_root(request, format=None):
@@ -72,4 +75,3 @@ def api_root(request, format=None):
         response[namespace] = namespace_urls
 
     return Response(response)
-

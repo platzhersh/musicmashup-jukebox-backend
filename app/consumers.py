@@ -5,6 +5,7 @@ from channels.sessions import channel_session, enforce_ordering
 import os
 import random
 import string
+from jukebox.models import JukeboxUser
 
 @channel_session
 @enforce_ordering(slight=True)
@@ -12,16 +13,24 @@ def ws_connect(message):
     """
     Connected to websocket.connect channel
 
-    Todo: check if there is a user, if yes, add to room.
+    Todo: create a user and store session_id
     """
     room = os.path.basename(os.path.normpath(message.content['path']))
     message.channel_session['room'] = room
     session_id = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
     message.channel_session['session_id'] = session_id
     
-    Group("room-%s" % room).add(message.reply_channel)  
-    Group("room-%s" % room).send({"text": "Hallo {}, willkommen im Raum {}".format(session_id, room)})
+    user = JukeboxUser.objects.create(
+    	name=session_id,
+    	session_id=session_id,
+    	room_id=room)
     
+    message.channel_session['user_id'] = user.id
+    message.channel_session['user_name'] = user.name
+
+    Group("room-%s" % room).add(message.reply_channel)  
+    Group("room-%s" % room).send({"text": "Hallo {}, willkommen im Raum {}".format(user.name, room)})
+
 
 
 @channel_session
@@ -51,9 +60,10 @@ def ws_message(message):
     Todo: 
     """
     #Group("room").send({"text": text })
-    session_id = message.channel_session['session_id']
-    msg = "[{}]: {}".format(session_id, message['text'])
-    Group("room-%s" % message.channel_session['room']).send({"text": msg })
+    user_name = message.channel_session['user_name']
+    room_id = message.channel_session['room']
+    msg = "[{}]: {}".format(user_name, message['text'])
+    Group("room-%s" % room_id).send({"text": msg })
 
 """        
     ChatMessage.objects.create(

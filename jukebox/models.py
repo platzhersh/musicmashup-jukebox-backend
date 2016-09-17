@@ -8,6 +8,8 @@ from django.db import models
 
 class JukeboxUser(models.Model):
     name = models.CharField(max_length=255)
+    session_id = models.CharField(max_length=255)
+    room_id = models.IntegerField()
 
     def __unicode__(self):
         return u"{}".format(self.name)
