@@ -3,6 +3,8 @@ from channels.handler import AsgiHandler
 from channels import Group
 from channels.sessions import channel_session, enforce_ordering
 import os
+import random
+import string
 
 @channel_session
 @enforce_ordering(slight=True)
@@ -14,9 +16,11 @@ def ws_connect(message):
     """
     room = os.path.basename(os.path.normpath(message.content['path']))
     message.channel_session['room'] = room
+    session_id = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
+    message.channel_session['session_id'] = session_id
     
     Group("room-%s" % room).add(message.reply_channel)  
-    Group("room-%s" % room).send({"text": "Willkommen im Raum %s" % room})
+    Group("room-%s" % room).send({"text": "Hallo {}, willkommen im Raum {}".format(session_id, room)})
     
 
 
@@ -33,7 +37,7 @@ def ws_disconnect(message):
     #Group("room").send("room left")
     room = message.channel_session['room']
     Group("room-%s" % room).discard(message.reply_channel)
-    Group("room-%s" % room).send("user left chat-%s" % room)
+    Group("room-%s" % room).send("user left chat-%s" % session_id, room)
     #print("user left chat-%s" % room)
 	
 
@@ -47,7 +51,9 @@ def ws_message(message):
     Todo: 
     """
     #Group("room").send({"text": text })
-    Group("room-%s" % message.channel_session['room']).send({"text": message['text']})
+    session_id = message.channel_session['session_id']
+    msg = "[{}]: {}".format(session_id, message['text'])
+    Group("room-%s" % message.channel_session['room']).send({"text": msg })
 
 """        
     ChatMessage.objects.create(
