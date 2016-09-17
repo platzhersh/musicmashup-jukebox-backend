@@ -31,7 +31,8 @@ def send_initial_data(room, user, message):
     :user
     :message
     """
-    msg = json.dumps({ 
+    msg = json.dumps({
+        "type": "init",
         "queue": get_queue_by_room(room),
         "user": json.dumps(model_to_dict(user)),
         "history": get_history_by_room(room),
@@ -46,6 +47,7 @@ def ws_connect(message):
     Connected to websocket.connect channel
 
     Todo: send current video queue
+    Todo: send user joined event
     """
     room = os.path.basename(os.path.normpath(message.content['path']))
     message.channel_session['room'] = room
@@ -74,6 +76,7 @@ def ws_disconnect(message):
     Connected to websocket.disconnect channel
 
     Todo: check if there is a user, if yes, remove from room.
+    Todo: send user left event
     """
 
     #Group("room").discard(message.reply_channel)
