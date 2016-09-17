@@ -85,7 +85,14 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+if 'ON_HEROKU' in os.environ:
+    if int(os.environ['ON_HEROKU']) == 1:
+        # Parse database configuration from $DATABASE_URL
+        import dj_database_url
+        DATABASES['default'] =  dj_database_url.config()
+        # fasten up database access
+        # not working smoothly with free plan 
+        # DATABASES['default']['CONN_MAX_AGE'] = 500
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
