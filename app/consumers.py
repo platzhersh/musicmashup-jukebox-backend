@@ -35,11 +35,6 @@ def ws_message(message):
 
     Todo: 
     """
-    evt = message['event']
-    if (evt):
-        if (evt == "add_video"):
-            print("add video")
-
     Group("chat-%s" % message.channel_session['room']).send({"text": message['text']})
 
 """        
