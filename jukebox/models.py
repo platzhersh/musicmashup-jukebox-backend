@@ -18,9 +18,8 @@ class Rating(models.Model):
 
 class Room(models.Model):
     """
-    TODO: delete
     """
-    name = models.CharField(blank=False, null=False, max_length=255, verbose_name="Name des Kantons")
+    name = models.CharField(max_length=255, verbose_name="Raumname")
     admin = models.ForeignKey(JukeboxUser)
     datetime_created = models.DateTimeField(blank=False, null=False, default=timezone.now, verbose_name="Created")
     datetime_closed = models.DateTimeField(blank=False, null=False, default=timezone.now, verbose_name="Closed")
@@ -34,7 +33,7 @@ class Room(models.Model):
 class Video(models.Model):
     """
     """
-    url = models.URLField(blank=True, null=True, max_length=255, verbose_name="YouTube Url")
+    url = models.URLField(max_length=255, verbose_name="YouTube URL")
     datetime_added = models.DateTimeField(blank=False, null=False, default=timezone.now, verbose_name="Added")
     room = models.ForeignKey(Room)
     user = models.ForeignKey(JukeboxUser)
