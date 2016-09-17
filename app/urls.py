@@ -22,6 +22,7 @@ from frontend import views as frontend_views
 
 urlpatterns = [
 	url(r'^$', frontend_views.home, name='home'),
+	url(r'^room/', frontend_views.room, name='room'),
 	url(r'^api/', include(api_urls, namespace="api")),
     url(r'^admin/', admin.site.urls),
 ]
