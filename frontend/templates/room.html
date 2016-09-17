@@ -8,7 +8,12 @@
 	  crossorigin="anonymous"></script>
 </head>
 <body>
-<h1>Musicmashup Jukebox Room</h1>
+<h1>Musicmashup Jukebox Room {{ room.name }}</h1>
+
+{% if not room %}
+Raum nicht gefunden
+{% else %}
+
 
 <div style="height: 300px;">
 	<ul id="chat">
@@ -16,6 +21,8 @@
 </div>
 
 <input type="text" id="text-in"></input><button onclick="sendtext()" id="text-submit">Send</button>
+
+{% endif %}
 
 </body>
 <script type="text/javascript">

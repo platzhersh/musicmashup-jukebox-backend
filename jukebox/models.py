@@ -6,12 +6,12 @@ from django.conf import settings
 from django.db import models
 
 
-class JukeBoxUser(models.Model):
+class JukeboxUser(models.Model):
     name = models.CharField(max_length=255)
 
 
 class Rating(models.Model):
-    user = models.ForeignKey(JukeBoxUser)
+    user = models.ForeignKey(JukeboxUser)
     video = models.ForeignKey('Video')
     positive_rating = models.BooleanField()
 
@@ -21,7 +21,7 @@ class Room(models.Model):
     TODO: delete
     """
     name = models.CharField(blank=False, null=False, max_length=255, verbose_name="Name des Kantons")
-    admin = models.ForeignKey(JukeBoxUser)
+    admin = models.ForeignKey(JukeboxUser)
     datetime_created = models.DateTimeField(blank=False, null=False, default=timezone.now, verbose_name="Created")
     datetime_closed = models.DateTimeField(blank=False, null=False, default=timezone.now, verbose_name="Closed")
     latitude = models.DecimalField(blank=True, null=True, verbose_name='Breitengrad', max_digits=9, decimal_places=6)
@@ -37,7 +37,7 @@ class Video(models.Model):
     url = models.URLField(blank=True, null=True, max_length=255, verbose_name="YouTube Url")
     datetime_added = models.DateTimeField(blank=False, null=False, default=timezone.now, verbose_name="Added")
     room = models.ForeignKey(Room)
-    user = models.ForeignKey(JukeBoxUser)
+    user = models.ForeignKey(JukeboxUser)
     played = models.BooleanField()
 
     def get_rating(self):
@@ -55,13 +55,13 @@ class Video(models.Model):
 
 
 class ChatMessage(models.Model):
-    user = models.ForeignKey(JukeBoxUser)
+    user = models.ForeignKey(JukeboxUser)
     datetime = models.DateTimeField(blank=False, null=False, default=timezone.now, verbose_name="Sent")
     text = models.TextField()
     room = models.ForeignKey(Room)
     
 
 class UserToRoom(models.Model):
-    user = models.ForeignKey(JukeBoxUser)
+    user = models.ForeignKey(JukeboxUser)
     room = models.ForeignKey(Room)
     datetime_joined = models.DateTimeField(blank=False, null=False, default=timezone.now, verbose_name="Sent")
