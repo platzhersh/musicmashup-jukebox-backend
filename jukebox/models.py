@@ -22,7 +22,7 @@ class Room(models.Model):
     name = models.CharField(max_length=255, verbose_name="Raumname")
     admin = models.ForeignKey(JukeboxUser)
     datetime_created = models.DateTimeField(blank=False, null=False, default=timezone.now, verbose_name="Created")
-    datetime_closed = models.DateTimeField(blank=False, null=False, default=timezone.now, verbose_name="Closed")
+    datetime_closed = models.DateTimeField(blank=True, null=True, verbose_name="Closed")
     latitude = models.DecimalField(blank=True, null=True, verbose_name='Breitengrad', max_digits=9, decimal_places=6)
     longitude = models.DecimalField(blank=True, null=True, verbose_name='Längengrad', max_digits=9, decimal_places=6)
     
