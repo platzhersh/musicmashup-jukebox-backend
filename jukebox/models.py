@@ -17,7 +17,7 @@ def get_random_sessionid():
 class JukeboxUser(models.Model):
     """
     """
-    name = models.CharField(max_length=255, default=get_random_sessionid)
+    name = models.CharField(max_length=255, blank=True, null=True)
     session_id = models.CharField(max_length=255, default=get_random_sessionid)
 
     def __unicode__(self):

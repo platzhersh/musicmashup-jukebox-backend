@@ -15,7 +15,7 @@ Raum nicht gefunden
 {% else %}
 
 
-<div style="height: 300px; overflow-y: scroll;">
+<div style="height: 300px; overflow-y: scroll;" id="chat-messages">
 	<ul id="chat">
 	</ul>
 </div>
@@ -26,9 +26,16 @@ Raum nicht gefunden
 
 </body>
 <script type="text/javascript">
+
+	function autoscroll() {
+		var wtf = $('#chat-messages');
+	    var height = wtf[0].scrollHeight;
+	    wtf.scrollTop(height);
+	}
+
 	// Note that the path doesn't matter for routing; any WebSocket
 	// connection gets bumped over to WebSocket consumers
-	var socket = new WebSocket("ws://" + window.location.host + "/rooms/" + {{room.id}});
+	var socket = new WebSocket("wss://" + window.location.host + "/rooms/" + {{room.id}});
 	socket.onopen = function() {
 	    console.log("connected");
 	    $('#text-in').prop('disabled', false);
@@ -40,6 +47,7 @@ Raum nicht gefunden
 	socket.onmessage = function(e) {
 		$('#chat').append("<li>"+e.data+"</li>")
 		console.log("Message received" + e.data);
+		autoscroll();
 	}
 
 	$('#text-in').on('keypress', function (e) {
