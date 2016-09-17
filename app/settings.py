@@ -166,3 +166,6 @@ if 'ON_HEROKU' in os.environ:
                 "ROUTING": "app.routing.channel_routing",
             },
         }
+
+# allow all hosts to do cross-site requests
+CORS_ORIGIN_ALLOW_ALL = True
