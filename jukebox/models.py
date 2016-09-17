@@ -34,7 +34,7 @@ class Room(models.Model):
     
 
     def __unicode__(self):
-        return u"{} ({})".format(self.name, self.user.name)
+        return u"{} ({})".format(self.name, self.admin.name)
 
 class Video(models.Model):
     """

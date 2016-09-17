@@ -28,12 +28,14 @@ Raum nicht gefunden
 <script type="text/javascript">
 	// Note that the path doesn't matter for routing; any WebSocket
 	// connection gets bumped over to WebSocket consumers
-	var socket = new WebSocket("ws://" + window.location.host);
+	var socket = new WebSocket("wss://" + window.location.host + "/rooms/" + {{room.id}});
 	socket.onopen = function() {
 	    socket.send("Willkommen");
+	    console.log("Willkommen sent");
 	}
 	socket.onmessage = function(e) {
 		$('#chat').append("<li>"+e.data+"</li>")
+		console.log("Message received");
 	}
 
 	$('#text-in').on('keypress', function (e) {
@@ -47,6 +49,7 @@ Raum nicht gefunden
 		var text = $('#text-in').val();
 		$('#text-in').val('');
 		socket.send(text);
+		console.log(text + " sent");
 	}
 </script>
 
