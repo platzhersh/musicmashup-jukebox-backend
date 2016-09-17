@@ -7,6 +7,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import status, filters, permissions
+from jukebox.serializers import RoomSerializer
+from jukebox.models import Room
 
 
 class DjangoModelPermissionsMixin(generics.GenericAPIView):
@@ -75,3 +77,13 @@ def api_root(request, format=None):
         response[namespace] = namespace_urls
 
     return Response(response)
+
+
+class RoomListView(DjangoModelPermissionsMixin, generics.ListCreateAPIView):
+    """
+    Get a list of all partner Reports.
+    """
+
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
+    permission_classes = ()
