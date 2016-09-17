@@ -9,11 +9,17 @@ from django.db import models
 class JukeboxUser(models.Model):
     name = models.CharField(max_length=255)
 
+    def __unicode__(self):
+        return u"{}".format(self.name)
+
 
 class Rating(models.Model):
     user = models.ForeignKey(JukeboxUser)
     video = models.ForeignKey('Video')
     positive_rating = models.BooleanField()
+
+    def __unicode__(self):
+        return u"{} rated {} {}".format(self.user, self.video, self.positive_rating)
 
 
 class Room(models.Model):
@@ -28,11 +34,14 @@ class Room(models.Model):
     
 
     def __unicode__(self):
-        return u"{}".format(self.name)
+        return u"{} ({})".format(self.name, self.user.name)
 
 class Video(models.Model):
     """
     """
+    title = models.CharField(max_length=255, verbose_name="Videotitel auf YouTube")
+    duration = models.CharField(max_length=255, verbose_name="Dauer des Videos")
+    uploader = models.CharField(max_length=255, verbose_name="Uploader auf YouTube")
     url = models.URLField(max_length=255, verbose_name="YouTube URL")
     datetime_added = models.DateTimeField(blank=False, null=False, default=timezone.now, verbose_name="Added")
     room = models.ForeignKey(Room)
@@ -52,15 +61,24 @@ class Video(models.Model):
                 rating = rating -1 
         return rating
 
+    def __unicode__(self):
+        return u"{} ({})".format(self.title, self.duration)
+
 
 class ChatMessage(models.Model):
     user = models.ForeignKey(JukeboxUser)
     datetime = models.DateTimeField(blank=False, null=False, default=timezone.now, verbose_name="Sent")
     text = models.TextField()
     room = models.ForeignKey(Room)
+
+    def __unicode__(self):
+        return u"{}@{} schrieb \"\"".format(self.name, self.room, self.text)
     
 
 class UserToRoom(models.Model):
     user = models.ForeignKey(JukeboxUser)
     room = models.ForeignKey(Room)
     datetime_joined = models.DateTimeField(blank=False, null=False, default=timezone.now, verbose_name="Sent")
+
+    def __unicode__(self):
+        return u"{} in {}".format(self.user, self.room)
