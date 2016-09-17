@@ -4,12 +4,21 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.conf import settings
 from django.db import models
+import random
+import string
 
+def get_random_sessionid():
+    """
+    Create random sessionid
+    """
+    session_id = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
+    return session_id
 
 class JukeboxUser(models.Model):
-    name = models.CharField(max_length=255)
-    session_id = models.CharField(max_length=255)
-    room_id = models.IntegerField()
+    """
+    """
+    name = models.CharField(max_length=255, default=get_random_sessionid)
+    session_id = models.CharField(max_length=255, default=get_random_sessionid)
 
     def __unicode__(self):
         return u"{}".format(self.name)
@@ -45,6 +54,7 @@ class Video(models.Model):
     duration = models.CharField(max_length=255, verbose_name="Dauer des Videos")
     uploader = models.CharField(max_length=255, verbose_name="Uploader auf YouTube")
     url = models.URLField(max_length=255, verbose_name="YouTube URL")
+    thumb_url = models.URLField(max_length=255, verbose_name="YouTube Thumbnail URL")
     datetime_added = models.DateTimeField(blank=False, null=False, default=timezone.now, verbose_name="Added")
     room = models.ForeignKey(Room)
     user = models.ForeignKey(JukeboxUser)

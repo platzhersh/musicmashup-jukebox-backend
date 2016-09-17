@@ -2,7 +2,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
-from jukebox.models import Room, Video
+from jukebox.models import Room, Video, JukeboxUser
 
 
 class VideoSerializer(serializers.ModelSerializer):
@@ -17,4 +17,10 @@ class RoomSerializer(serializers.ModelSerializer):
     """
     """
     class Meta:
-        model = Video
+        model = Room
+
+class JukeboxUserSerializer(serializers.ModelSerializer):
+    """
+    """
+    class Meta:
+        model = JukeboxUser

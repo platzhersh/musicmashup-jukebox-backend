@@ -6,12 +6,13 @@ from api import views
 
 
 jukebox = [
-    url(r'^rooms/?$', views.RoomListView, name="eventcategories"),
+    url(r'^rooms/?$', views.RoomListView.as_view(), name="eventcategories"),
     url(r'^rooms/(?P<pk>[0-9]+)/?$', utils.get_retrieveview('jukebox', 'Room').as_view(), name='eventcategory'),
 
     url(r'^videos/?$', utils.get_listview('jukebox', 'Video').as_view(), name="videos"),
     url(r'^videos/(?P<pk>[0-9]+)/?$', utils.get_retrieveview('jukebox', 'Video').as_view(), name='video'),
 
+    url(r'^users/?$', views.JukeboxUserCreateView.as_view(), name="users"),
 ]
 
 # where it all comes together

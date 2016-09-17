@@ -31,10 +31,15 @@ Raum nicht gefunden
 	var socket = new WebSocket("ws://" + window.location.host + "/rooms/" + {{room.id}});
 	socket.onopen = function() {
 	    console.log("connected");
+	    $('#text-in').prop('disabled', false);
+	}
+	socket.onclose = function() {
+	    console.log("disconnected");
+	    $('#text-in').prop('disabled', true);
 	}
 	socket.onmessage = function(e) {
 		$('#chat').append("<li>"+e.data+"</li>")
-		console.log("Message received");
+		console.log("Message received" + e.data);
 	}
 
 	$('#text-in').on('keypress', function (e) {

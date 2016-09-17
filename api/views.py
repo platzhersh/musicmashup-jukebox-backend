@@ -7,8 +7,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import status, filters, permissions
-from jukebox.serializers import RoomSerializer
-from jukebox.models import Room
+from jukebox.serializers import RoomSerializer, JukeboxUserSerializer
+from jukebox.models import Room, JukeboxUser
 
 
 class DjangoModelPermissionsMixin(generics.GenericAPIView):
@@ -87,3 +87,13 @@ class RoomListView(DjangoModelPermissionsMixin, generics.ListCreateAPIView):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
     permission_classes = ()
+
+
+class JukeboxUserCreateView(generics.ListCreateAPIView):
+    """
+    Get a list of all partner Reports.
+    """
+
+    queryset = JukeboxUser.objects.all()
+    serializer_class = JukeboxUserSerializer
+    
