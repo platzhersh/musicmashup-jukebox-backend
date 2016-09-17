@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Simple Chat</title>
+	<script
+	  src="https://code.jquery.com/jquery-3.1.0.min.js"
+	  integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
+	  crossorigin="anonymous"></script>
+</head>
+<body>
+<h1>Chat</h1>
+
+<div style="height: 300px;">
+	<ul id="chat">
+	</ul>
+</div>
+
+<input type="text" id="text-in"></input><button onclick="sendtext()" id="text-submit">Send</button>
+
+</body>
+<script type="text/javascript">
+	// Note that the path doesn't matter for routing; any WebSocket
+	// connection gets bumped over to WebSocket consumers
+	var socket = new WebSocket("ws://" + window.location.host + "/chat/");
+	socket.onopen = function() {
+	    socket.send("Willkommen");
+	}
+	socket.onmessage = function(e) {
+		$('#chat').append("<li>"+e.data+"</li>")
+	}
+
+	$('#text-in').on('keypress', function (e) {
+		/* check if enter is pressed */
+        if(e.which === 13){
+        	sendtext();
+         }
+   });
+
+	function sendtext() {
+		var text = $('#text-in').val();
+		$('#text-in').val('');
+		socket.send(text);
+	}
+</script>
+
+</html>
