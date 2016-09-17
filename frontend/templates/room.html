@@ -21,7 +21,7 @@
 <script type="text/javascript">
 	// Note that the path doesn't matter for routing; any WebSocket
 	// connection gets bumped over to WebSocket consumers
-	var socket = new WebSocket("wss://" + window.location.host + "/chat/");
+	var socket = new WebSocket("ws://" + window.location.host);
 	socket.onopen = function() {
 	    socket.send("Willkommen");
 	}
