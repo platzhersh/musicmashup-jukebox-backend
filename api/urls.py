@@ -8,6 +8,9 @@ from api import views
 jukebox = [
     url(r'^rooms/?$', utils.get_listview('jukebox', 'Room').as_view(), name="eventcategories"),
     url(r'^rooms/(?P<pk>[0-9]+)/?$', utils.get_retrieveview('jukebox', 'Room').as_view(), name='eventcategory'),
+
+    url(r'^videos/?$', utils.get_listview('jukebox', 'Video').as_view(), name="videos"),
+    url(r'^videos/(?P<pk>[0-9]+)/?$', utils.get_retrieveview('jukebox', 'Video').as_view(), name='video'),
 ]
 
 # where it all comes together

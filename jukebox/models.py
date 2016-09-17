@@ -10,6 +10,12 @@ class JukeBoxUser(models.Model):
     name = models.CharField(max_length=255)
 
 
+class Rating(models.Model):
+    user = models.ForeignKey(JukeBoxUser)
+    video = models.ForeignKey('Video')
+    positive_rating = models.BooleanField()
+
+
 class Room(models.Model):
     """
     TODO: delete
@@ -21,6 +27,7 @@ class Room(models.Model):
     latitude = models.DecimalField(blank=True, null=True, verbose_name='Breitengrad', max_digits=9, decimal_places=6)
     longitude = models.DecimalField(blank=True, null=True, verbose_name='Längengrad', max_digits=9, decimal_places=6)
     
+
     def __unicode__(self):
         return u"{}".format(self.name)
 
@@ -33,11 +40,18 @@ class Video(models.Model):
     user = models.ForeignKey(JukeBoxUser)
     played = models.BooleanField()
 
-
-class Rating(models.Model):
-    user = models.ForeignKey(JukeBoxUser)
-    video = models.ForeignKey(Video)
-    positive_rating = models.BooleanField()
+    def get_rating(self):
+        """
+        returns Rating of video
+        """
+        rating = 0
+        ratings = Rating.objects.filter(video__room=self)
+        for r in ratings:
+            if r.positive_rating:
+                rating = rating + 1
+            else:
+                rating = rating -1 
+        return rating
 
 
 class ChatMessage(models.Model):

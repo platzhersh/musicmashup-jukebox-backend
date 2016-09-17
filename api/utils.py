@@ -2,6 +2,8 @@
 from django.apps import apps
 from rest_framework import serializers
 from rest_framework import generics
+from api.views import DjangoModelPermissionsMixin
+
 
 def get_serializer_by_model(serialize):
 	"""

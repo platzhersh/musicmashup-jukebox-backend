@@ -10,19 +10,13 @@ from rest_framework import status, filters, permissions
 
 
 class DjangoModelPermissionsMixin(generics.GenericAPIView):
-    permission_classes = (permissions.IsAuthenticated, permissions.DjangoModelPermissions,)
+    permission_classes = (permissions.DjangoModelPermissions,)
 
 
 @api_view(('GET',))
 def api_root(request, format=None):
     """
-    This is the API of Velafrica (www.velafrica.ch)
 
-    If you build something cool with it and want to show it to us, please do not hesitate!
-
-    Send a link with description to nikolai.raeber (at) velafrica.ch
-
-    Have fun!
     """
 
     from api import urls
